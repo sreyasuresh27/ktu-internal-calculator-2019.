@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KTU Internal Marks Calculator</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 30px;
+      width: 350px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      color: #e0e0e0;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #f0f0f0;
+      margin-top: 12px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+    .row input {
+      flex: 1;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(to right, #ff758c, #ff7eb3);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.03);
+      background: linear-gradient(to right, #ff7eb3, #ff758c);
+    }
+
+    .result {
+      text-align: center;
+      margin-top: 18px;
+      font-weight: bold;
+      color: #fff200;
+    }
+
+    .breakdown {
+      text-align: center;
+      font-size: 13px;
+      color: #e0e0e0;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h1>KTU Internal Marks</h1>
+    <p>Weights: Test1 35%, Test2 35%, Attendance 15%, Assignment 15%</p>
+
+    <label>Internal total (out of)</label>
+    <input type="number" id="total" value="20" min="1">
+
+    <label>Test 1 — Obtained / Max</label>
+    <div class="row">
+      <input type="number" id="t1o" value="8" min="0">
+      <input type="number" id="t1m" value="10" min="1">
+    </div>
+
+    <label>Test 2 — Obtained / Max</label>
+    <div class="row">
+      <input type="number" id="t2o" value="7" min="0">
+      <input type="number" id="t2m" value="10" min="1">
+    </div>
+
+    <label>Attendance — Obtained / Max</label>
+    <div class="row">
+      <input type="number" id="attO" value="9" min="0">
+      <input type="number" id="attM" value="10" min="1">
+    </div>
+
+    <label>Assignment — Obtained / Max</label>
+    <div class="row">
+      <input type="number" id="assO" value="12" min="0">
+      <input type="number" id="assM" value="15" min="1">
+    </div>
+
+    <button id="calc">Calculate</button>
+
+    <div class="result" id="out">Final internal: —</div>
+    <div class="breakdown" id="break"></div>
+  </div>
+
+  <script>
+    document.getElementById('calc').addEventListener('click', function() {
+      const total = parseFloat(document.getElementById('total').value) || 20;
+      const t1o = parseFloat(document.getElementById('t1o').value) || 0;
+      const t1m = parseFloat(document.getElementById('t1m').value) || 1;
+      const t2o = parseFloat(document.getElementById('t2o').value) || 0;
+      const t2m = parseFloat(document.getElementById('t2m').value) || 1;
+      const attO = parseFloat(document.getElementById('attO').value) || 0;
+      const attM = parseFloat(document.getElementById('attM').value) || 1;
+      const assO = parseFloat(document.getElementById('assO').value) || 0;
+      const assM = parseFloat(document.getElementById('assM').value) || 1;
+
+      const w1 = 0.35, w2 = 0.35, wa = 0.15, ws = 0.15;
+
+      const s1 = (t1o / t1m) * w1;
+      const s2 = (t2o / t2m) * w2;
+      const sa = (attO / attM) * wa;
+      const ss = (assO / assM) * ws;
+
+      const finalMarks = Math.round((s1 + s2 + sa + ss) * total * 100) / 100;
+
+      document.getElementById('out').textContent = `Final internal: ${finalMarks} / ${total}`;
+      document.getElementById('break').textContent =
+        `T1: ${Math.round(s1*100)}% • T2: ${Math.round(s2*100)}% • Att: ${Math.round(sa*100)}% • Asn: ${Math.round(ss*100)}%`;
+    });
+  </script>
+</body>
+</html>
